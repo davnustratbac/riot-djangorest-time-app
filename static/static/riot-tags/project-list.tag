@@ -118,68 +118,51 @@
 	this.areProjects = false
 
 	this.on('mount',function(){
-		projectUrl = 'http://localhost:8000/api/projects/'
-		customerUrl = 'http://localhost:8000/api/customers/'
 		
-		$.get(projectUrl).then((res) => {
-			this.projects = res
-			this.update()
-
-		})
-
-		$.get(customerUrl).then((res) => {
-			this.customers = res
+		this.opts.store.projects.show().then((projects) =>{
+			this.projects = projects 
 			this.update()
 		});
 
-	})
+		this.opts.store.customers.show().then((customers) => {
+			this.customers = customers
+			this.update()
+		});
+		
 
+	})
 
 
 	saveProject(){
 		$('#modal-text').modal('hide');
 
+		// form values
 		customer = this.customerSelect.value
 		name = this.projectName.value
-		token = Cookies.get('csrftoken')
-		data = {customer:customer,name:name,csrfmiddlewaretoken:token}
+		data = {customer:customer,name:name}
 
-		url = 'http://localhost:8000/api/projects/create/'
-		$.post(url,data).then((project) => {
+		this.opts.store.projects.create(data).then((project) => {
 			this.projects.push(project)
-			this.update()
-		})
-		.then(() => {
 			this._resetForm()
-		})
-		.fail((e) => {
-			console.log(e)
+			this.update()
 		});
-		this.update()
+
 	}
 
 	deleteProject(e){
 		id = e.item.project.id
-		url = 'http://localhost:8000/api/projects/delete/' + id + '/'
-		data = {csrfmiddlewaretoken:Cookies.get('csrftoken')}
-		$.post(url,data).then((res) => {
+		this.opts.store.projects.delete(id).then((res) => {
 			deleted = this._findAndDelete(this.projects,id)
-			if (deleted){
-				this.opts.messages.trigger('success',res)
-				scroll(0,0)
-			}
-		})
-		.fail((e) => {
-			
-		})
+			this.opts.messages.trigger('success',res)
+		});
 	}
 
 	getProject(e){
 		id = e.item.project.id.toString()
-		$.get('http://localhost:8000/api/project/' + id).then((res) => {
-			this.modalProject = res 
+		this.opts.store.projects.getById(id).then((project) => {
+			this.modalProject = project 
 			this.update()
-		});
+		})
 	}
 	
 	//---------------------------------------------

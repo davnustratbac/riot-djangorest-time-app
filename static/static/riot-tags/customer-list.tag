@@ -51,7 +51,6 @@
 	this.customers = null
 	this.on('mount',function(){
 		this.opts.store.customers.show().then((customers) => {
-			console.log(customers)
 			this.customers = customers 
 			this.update()
 		})

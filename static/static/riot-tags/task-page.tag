@@ -256,10 +256,11 @@
 
 	deleteEntry(e){
 		id = e.item.entry.id
+		this.taskEntryDurationCount -= e.item.entry.duration_in_seconds
 		this.opts.store.taskEntries.delete(id).then((res) => {
 			this.opts.store.findAndDelete(this.taskEntries,id);
 			if (this.taskEntries.length === 0) {
-				this.task.task_entry_count -=1
+				this.task.task_entry_count -= 1
 				this.task.has_entries = false
 			}
 			this.update()

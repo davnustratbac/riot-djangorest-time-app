@@ -11,6 +11,13 @@ var ROUTING = (function(){
 				},
 				project: {
 					show: `${self.server}/api/projects/`,
+					create: `${self.server}/api/projects/create/`,
+					delete(id){
+						return `${self.server}/api/projects/delete/${id}/`
+					},
+					getById(id){
+						return `${self.server}/api/project/${id}/`
+					},
 				},
 				task: {
 					show: `${self.server}/api/tasks/`,
@@ -121,6 +128,8 @@ var CUSTOMERS = (function(router){
 		return $.get(url)
 	}
 
+
+
 	self.update = function(task_id){}
 	self.delete = function(task_id){}
 
@@ -128,7 +137,7 @@ var CUSTOMERS = (function(router){
 
 })(ROUTING);
 
-var PROJECTS = (function(router){
+var PROJECTS = (function(router,helper){
 	var self = {}
 
 	self.show = function(){
@@ -136,12 +145,27 @@ var PROJECTS = (function(router){
 		return $.get(url)
 	}
 
-	self.update = function(task_id){}
-	self.delete = function(task_id){}
+	self.create = function(data){
+		url = router.routes.project.create 
+		data = helper.packageData(data)
+		return $.post(url,data)
+	}
+
+	self.delete = function(task_id){
+		url = router.routes.project.delete(task_id)
+		data = helper.packageData({})
+		return $.post(url,data)
+	}
+
+	self.getById = function(project_id){
+		url = router.routes.project.getById(project_id)
+		data = helper.packageData({})
+		return $.get(url,data)
+	}
 
 	return self
 
-})(ROUTING);
+})(ROUTING,UTIL);
 
 
 var STORE = (function(){

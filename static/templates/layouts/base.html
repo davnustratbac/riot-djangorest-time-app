@@ -193,7 +193,7 @@
         token = Cookies.get('csrftoken')
         store = new STORE('http://localhost:8000',token);
         messages = riot.observable();
-        riot.mount('project-list',{messages:messages})
+        riot.mount('project-list',{messages:messages,store:store})
         riot.mount('alert-box',{messages:messages})
         riot.mount('task-page',{messages:messages,store:store})
         riot.mount('customer-list',{messages:messages,store:store})

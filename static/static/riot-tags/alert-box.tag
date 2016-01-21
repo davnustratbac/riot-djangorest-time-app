@@ -15,12 +15,14 @@
 		self.message = message
 		self.success = true
 		self.activated = true;
+		scroll(0,0)
 		self.update();
 	})
 
 	this.opts.messages.on('failure',function(message){
 		this.activated = true
 		this.message = message
+		scroll(0,0)
 		self.update()
 	})
 
