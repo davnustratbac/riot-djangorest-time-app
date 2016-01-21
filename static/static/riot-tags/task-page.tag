@@ -180,7 +180,7 @@
 										</button>
 									</td>
 								</tr> 
-					
+								
 								<!-- edit entry modal -->
 								<div class="modal fade" id="edit-entry-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
                   <div class="modal-dialog modal-sm">
@@ -208,6 +208,7 @@
 								
 							</tbody> 
 						</table> 
+						<h2>total duration: { taskEntryDurationCount } seconds</h2>
 					</div>
 			</div>
 	</div>
@@ -225,6 +226,7 @@
 	this.isHovered = false
 	this.autoCompleteRes = []
 	this.autoCompActivated = false
+	this.taskEntryDurationCount = 0
 
 	// init
 	this.on('mount',function(){
@@ -288,7 +290,10 @@
 		this.opts.store.taskEntries.hitTimer(id).then((res) => {
 			taskEntry = e.item.entry
 			taskEntry.clock_started ? taskEntry.clock_started = false : taskEntry.clock_started = true
-			if (taskEntry.clock_started === false){taskEntry.duration_in_seconds = res.duration_in_seconds}
+			if (taskEntry.clock_started === false){
+				taskEntry.duration_in_seconds = res.duration_in_seconds
+				this.taskEntryDurationCount += res.duration_in_seconds
+			}
 			this.update()
 		}).fail((e) => {console.log(e)})
 	}
@@ -383,9 +388,17 @@
 		data = {taskID:resultTask.id}
 		this.opts.store.taskEntries.show().then((entries) => {
 			this.taskEntries = entries
+			this.sumEntryDurations(entries)
 			this.update()
 		}).fail((e) => {console.log(e)})
 		this.update()
+	}
+
+	sumEntryDurations(entries){
+		for (var i in entries) {
+			entry = entries[i]
+			this.taskEntryDurationCount += entry.duration_in_seconds
+		}
 	}
 
 	// private

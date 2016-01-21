@@ -17,6 +17,12 @@ class Task(models.Model):
 	def task_entry_count(self):
 		return len(self.taskentry_set.all()) if self.taskentry_set.first() else 0
 
+	def task_entry_duration_total_in_seconds(self):
+		res = 0
+		for item in self.taskentry_set.all():
+			res += item.get_duration_in_seconds()
+		return res
+
 class TaskEntry(models.Model):
 	task = models.ForeignKey(Task,blank=True,null=True)
 	date_field = models.DateField(auto_now_add=True,blank=True,null=True)

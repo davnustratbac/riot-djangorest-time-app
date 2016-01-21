@@ -16,6 +16,10 @@ class TaskSerializer(serializers.ModelSerializer):
 	project = ProjectSerializer()
 	task_entry_count = serializers.SerializerMethodField('task_entry_count')
 	has_entries = serializers.SerializerMethodField('has_task_entries')
+	task_entry_duration_total_in_seconds = serializers.SerializerMethodField('task_entry_duration_total_in_seconds')
+
+	def task_entry_duration_total_in_seconds(self,task):
+		return task.task_entry_duration_total_in_seconds()
 
 	def task_entry_count(self, task):
 		return task.task_entry_count()
@@ -25,7 +29,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Task
-		fields = ['id','project','name','user','has_entries','task_entry_count']
+		fields = ['id','project','name','user','has_entries','task_entry_count','task_entry_duration_total_in_seconds']
 		
 
 	

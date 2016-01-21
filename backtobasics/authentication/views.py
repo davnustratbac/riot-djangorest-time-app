@@ -19,7 +19,7 @@ def login(request):
 		if user_auth:
 			auth_login(request,user_auth)
 			messages.success(request,'You successfully logged in!')
-			return redirect('home')
+			return redirect('projects')
 		else:
 			messages.error(request,'Login Failed')
 	
