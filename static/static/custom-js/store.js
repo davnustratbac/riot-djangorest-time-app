@@ -26,6 +26,9 @@ var ROUTING = (function(){
 					},
 					hitTimer(id){
 						return `${self.server}/api/task/entries/${id}/hit-timer/`
+					},
+					delete(id){
+						return `${self.server}/api/task/entries/delete/${id}/`
 					}
 				}
 			}
@@ -97,7 +100,12 @@ var TASKENTRY = (function(router,helper){
 		}
 
 		self.update = function(taskEntryId){}
-		self.delete = function(taskEntryId){}
+
+		self.delete = function(taskEntryId){
+			data = helper.packageData({})
+			url = router.routes.taskEntry.delete(id)
+			return $.post(url,data)
+		}
 		// end crud
 		return self
 })(ROUTING,UTIL);
@@ -166,6 +174,16 @@ var STORE = (function(){
 			}
 			return false
 	  }
+
+	  this.findAndDelete = function(items,id){
+		for(var i =0; i< items.length;i++){
+			if (items[i].id === id){
+				items.splice(i, 1);
+				return true
+			}
+		}
+		return false
+	}
 		
 		// end functions
 	}

@@ -38,6 +38,28 @@ class TupleTest(TestCase):
 		self.te.hit_timer()
 		assert self.te.get_duration_in_seconds() == 4
 
+	def test_last_save(self):
+		self.te.hit_timer()
+		iwantto.sleep(3)
+		self.te.hit_timer()
+		print self.te.last_date_time_save()
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

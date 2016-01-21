@@ -149,13 +149,12 @@
 
 				<!-- show task entries -->
 				<div if={ activateTaskEntries } class="bs-example" data-example-id="simple-table"> 
-						<table class="table"> 
+
+						<table class="table table-bordered table-hover"> 
 				
-							<h2 class="title-border custom title-bg-line text-center"><span>{ task.name } <small style='margin-left: 5px;'>task entries</small></span></h2>
+							<h2 class="title-border custom title-bg-line text-center"><span>{ task.name } <small>task entries</small></span></h2>
 							<thead> 
 								<tr> 
-									<th>clock started</th>
-									<th>date</th>
 									<th>last save</th>
 									<th>duration/sec</th>
 									<th>note</th>
@@ -168,13 +167,11 @@
 							<tbody> 
 								
 								<tr each={ entry in taskEntries }> 
-									<td>{ entry.clock_started }</td>
-									<td>{ entry.date_field }</td>
-									<td>{ entry.time_record }</td>
+									<td>{ entry.datetime_last_save }</td>
 									<td>{ entry.duration_in_seconds } secs</td>
 									<td>{ entry.note }</td>
-									<td><button class='btn btn-default'>edit</button></td>
-									<td><button class="btn btn-danger">Delete</button></td>
+									<td><button onclick={ editEntry } class='btn btn-default' data-toggle="modal" data-target="#edit-entry-modal">edit</button></td>
+									<td><button onclick={ deleteEntry } class="btn btn-danger">Delete</button></td>
 									<td>
 										<button if={ !entry.clock_started } onclick={ hitTimer } class='btn btn-info'>Start Clock</button>
 										<button if={ entry.clock_started } onclick={ hitTimer } class='btn btn-dark'>
@@ -183,7 +180,34 @@
 										</button>
 									</td>
 								</tr> 
-				
+					
+								<!-- edit entry modal -->
+								<div class="modal fade" id="edit-entry-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+                  <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                          <h3 class="modal-title" id="myModalLabel3">Edit Task Entry</h3>
+                          </div><!-- End .modal-header -->
+                          <div class="modal-body">
+
+                          <label class="input-desc">Edit last save date</label>
+                          <div class="input-group date form-datetime" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                              <input class="form-control" size="16" type="text" value="" readonly="">
+                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                          </div>
+
+                          <label class="input-desc">Edit Note</label>
+                          <textarea class="form-control" rows="4" placeholder="{ currentTaskEntry.note }"></textarea>
+                          
+                          </div><!-- End .modal-body -->
+                          <div class="modal-footer">
+                          <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
+                          <button class="btn btn-dark">Action</button>
+                          </div><!-- End .modal-footer -->
+                      </div><!-- End .modal-content -->
+                  </div><!-- End .modal-dialog -->
+              </div>
 								
 							</tbody> 
 						</table> 
@@ -193,11 +217,13 @@
 <script>
 
 	// init variables
+	this.currentTaskEntry = null
 	this.activateTaskEntries = false
 	this.activateTaskEntryForm = false
 	this.task = null 
 	this.projects = null
 	this.tasks = null
+	this.taskEntries = null
 	this.customers = null 
 	this.isHovered = false
 	this.autoCompleteRes = []
@@ -226,6 +252,18 @@
 		})
 		this.activateTaskEntryForm = false
 		this.update()
+	}
+
+	deleteEntry(e){
+		id = e.item.entry.id
+		this.opts.store.taskEntries.delete(id).then((res) => {
+			this.opts.store.findAndDelete(this.taskEntries,id);
+			this.update()
+		})
+	}
+
+	editEntry(e){
+		this.currentTaskEntry = e.item.entry
 	}
 
 	// crud task

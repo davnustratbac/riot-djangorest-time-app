@@ -25,6 +25,12 @@ class TaskEntry(models.Model):
 	def __unicode__(self):
 		return str(self.task.name)
 
+	def datetime_last_save(self):
+		tf = self.time_record
+		hour,min,sec = tf.hour,tf.minute,tf.second
+		formatted_time = time(hour,min,sec)
+		return datetime.combine(self.date_field,formatted_time)
+
 	def start(self):
 		self.clock_started = True
 		self.date_field = datetime.now().date()

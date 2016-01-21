@@ -91,6 +91,30 @@ class APITaskEntryHitTimer(ModelListMixin,APIView):
 			return Response(serialized_entry,status=status.HTTP_200_OK)
 		return Response('Failure, couldnt find task')
 
+class APITaskEntryDelete(ModelListMixin,APIView):
+	authentication_classes = (SessionAuthentication,)
+	permission_classes = (IsAuthenticated,)
+
+	def post(self,request,id):
+		task_entry = self.get_task_entry_by_id(id)
+		if task_entry:
+			task_entry.delete()
+			return Response('Successfully deleted',status=status.HTTP_200_OK)
+		return Response('Failure')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
