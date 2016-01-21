@@ -12,7 +12,6 @@ from api.helper.helper_mixin import ModelListMixin
 from serializers import TaskSerializer,TaskEntrySerializer
 
 
-
 # tasks
 class APIFindTaskById(ModelListMixin,APIView):
 	authentication_classes = (SessionAuthentication,)
@@ -26,6 +25,8 @@ class APIFindTaskById(ModelListMixin,APIView):
 			return Response(serialized_task,status=status.HTTP_200_OK)
 		return Response('failure, there were no tasks under your username')
 
+
+# api/tasks/
 class APITaskListView(ModelListMixin,APIView):
 	authentication_classes = (SessionAuthentication,)
 	permission_classes = (IsAuthenticated,)

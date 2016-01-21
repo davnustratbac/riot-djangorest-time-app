@@ -100,7 +100,7 @@
 	            		</div>
 
 	            	</li>            	
-	            	<li onclick={ addAnotherEntry } class='{active:task.has_entries}' each={ task in tasks }><a href="#">{ task.name }</a></li>
+	            	<li onclick={ addAnotherEntry } class='{active:task.has_entries}' each={ task in tasks }><a href="#">{ task.name }<span style='float:right;' class="badge">{ task.has_entries ? task.task_entry_count : ''}</span></a></li>
 	            </ul>
 
 	            <!-- add new entry or list modal -->
@@ -192,18 +192,15 @@
                           <div class="modal-body">
 
                           <label class="input-desc">Edit last save date</label>
-                          <div class="input-group date form-datetime" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
-                              <input class="form-control" size="16" type="text" value="" readonly="">
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                          </div>
+                          <input type="datetime-local" name="dateTimeField" style='margin-bottom: 10px;'>
 
                           <label class="input-desc">Edit Note</label>
-                          <textarea class="form-control" rows="4" placeholder="{ currentTaskEntry.note }"></textarea>
+                          <textarea class="form-control" rows="4" placeholder="{ currentTaskEntry.note }" name="entryNoteEdit"></textarea>
                           
                           </div><!-- End .modal-body -->
                           <div class="modal-footer">
                           <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
-                          <button class="btn btn-dark">Action</button>
+                          <button onclick={ initiateDateTimePicker } class="btn btn-dark">Save</button>
                           </div><!-- End .modal-footer -->
                       </div><!-- End .modal-content -->
                   </div><!-- End .modal-dialog -->
@@ -246,6 +243,7 @@
 		this.opts.store.taskEntries.create(task_id,data).then((res) => {
 			task = this.opts.store.findById(task_id,this.tasks)
 			if (task) {
+				task.task_entry_count += 1
 				task.has_entries = true;
 				this.update()
 			}
@@ -258,6 +256,10 @@
 		id = e.item.entry.id
 		this.opts.store.taskEntries.delete(id).then((res) => {
 			this.opts.store.findAndDelete(this.taskEntries,id);
+			if (this.taskEntries.length === 0) {
+				this.task.task_entry_count -=1
+				this.task.has_entries = false
+			}
 			this.update()
 		})
 	}
@@ -311,6 +313,13 @@
 	}
 
 	// actions
+	initiateDateTimePicker(){
+		 note = this.entryNoteEdit.value
+		 datetime = this.dateTimeField.value
+		 console.log(note)
+		 console.log(datetime)
+	}
+
 	complete(e){
 		word = e.target.value
 		wordLen = word.length 

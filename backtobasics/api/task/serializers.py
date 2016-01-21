@@ -14,14 +14,18 @@ class TaskEntrySerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
 	project = ProjectSerializer()
+	task_entry_count = serializers.SerializerMethodField('task_entry_count')
 	has_entries = serializers.SerializerMethodField('has_task_entries')
 
+	def task_entry_count(self, task):
+		return task.task_entry_count()
+		
 	def has_task_entries(self, task):
 		return task.has_task_entries()
 
 	class Meta:
 		model = Task
-		fields = ['id','project','name','user','has_entries']
+		fields = ['id','project','name','user','has_entries','task_entry_count']
 		
 
 	

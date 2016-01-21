@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="col-sm-12">
-                        <h2 class="title-border custom mb40">Table Row Colored</h2>
+                        <h2 class="title-border custom mb40">Customer List</h2>
                         <div class="table-responsive">
                             <table class="table table-colored table-bordered table-condensed">
                                 <thead>

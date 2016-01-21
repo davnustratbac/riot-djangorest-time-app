@@ -14,6 +14,9 @@ class Task(models.Model):
 	def has_task_entries(self):
 		return self.taskentry_set.first() != None
 
+	def task_entry_count(self):
+		return len(self.taskentry_set.all()) if self.taskentry_set.first() else 0
+
 class TaskEntry(models.Model):
 	task = models.ForeignKey(Task,blank=True,null=True)
 	date_field = models.DateField(auto_now_add=True,blank=True,null=True)
