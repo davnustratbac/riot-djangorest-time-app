@@ -61,7 +61,7 @@
 
             	<!-- task list -->
 	            <ul class="dropdown-menu pull-left" role="menu">
-	            	<li class="dropdown-header">tasks:</li>            	
+	            	<li class="dropdown-header">tasks: <input type='text' placeholder='search'></li>            	
 	            	<li onclick={ addAnotherEntry } class='{active:task.has_entries}' each={ task in tasks }><a href="#">{ task.name }</a></li>
 	            </ul>
 

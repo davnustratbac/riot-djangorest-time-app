@@ -1,0 +1,4 @@
+*.pyc
+env.py
+customers.py
+db.sqlite3
