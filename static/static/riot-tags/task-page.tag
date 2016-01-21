@@ -1,5 +1,10 @@
 <task-page>
 <style type="text/css">
+
+	.modal-button{
+		min-width: 112px;
+	}
+
 	.taskEntryForm{
 		background-color: #50B2C4;
 		padding: 20px;
@@ -38,7 +43,7 @@
 			<div class="col-md-2">
 				
 				<!-- task form -->
-				<button onclick={ getProjects } class="btn btn-warning" data-toggle="modal" data-target="#modal-text" style='margin-bottom: 5px;'>
+				<button onclick={ getProjects } class="btn btn-warning modal-button" data-toggle="modal" data-target="#modal-text" style='margin-bottom: 5px;'>
             create task
         </button>
 
@@ -82,7 +87,7 @@
 
         <!-- tasks -->
         <div class="btn-group">
-            <button type="button" class="btn btn-custom3 dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-custom3 dropdown-toggle modal-button" data-toggle="dropdown">
             	Tasks
             	<a href="#"><span class="badge">{ count }</span></a>
 
@@ -255,8 +260,9 @@
 	}
 
 	clickAutoCompResult(e){
+		e.preventDefault()
 		this.task = e.item.result
-		this.initView(e.item.result)
+		this.addAnotherEntry(e)
 		this.autoComplete.value = null
 		this.autoCompActivated = false
 	}
@@ -283,12 +289,8 @@
 	}
 
 	addAnotherEntry(e){
-		this.task = e.item.task
-		if (e.item.task.has_entries) {
-			$('#add-another-entry-modal').modal()
-		}else{
-			this.showTaskEntryForm(e.item.task)
-		}
+		e.item.result ? this.task = e.item.result :	this.task = e.item.task
+		this.task.has_entries ? $('#add-another-entry-modal').modal() : this.showTaskEntryForm(this.task)
 	}
 
 	yesAnotherEntry(){
