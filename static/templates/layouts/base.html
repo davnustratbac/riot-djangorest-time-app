@@ -1,0 +1,287 @@
+{% load staticfiles %}
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <title>Boss - Multipurpose Premium Html5 Template</title>
+  <meta name="description" content="Multipurpose, premium, bootstrap based bussiness, corporate, portfolio, blog, onepage, creative, magazine, personal, landing, coming soon html5 css3 template">
+
+  <!--[if IE]> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" id="color-scheme" href="{% static 'css/colors/green.css' %}">
+  
+  <!-- Favicon and Apple Icons -->
+  <link rel="icon" type="image/png" href="images/icons/favicon.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="images/icons/faviconx57.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="images/icons/faviconx72.png">
+  
+  <!-- Modernizr -->
+  <script src="{% static 'js/modernizr.js' %}"></script>
+
+  <!--- jQuery -->
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+
+  <!-- Queryloader -->
+  <script src="{% static 'js/queryloader2.min.js' %}"></script>
+</head>
+<body>
+
+<!-- End .boss-loader-overlay -->
+    {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>Failure!</strong> {{ message }}
+            </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>Success!</strong> {{ message }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <alert-box></alert-box>
+
+    <div id="wrapper">
+        <header id="header" role="banner">
+            <div class="collapse navbar-white" id="header-search-form">
+                <div class="container">
+                    <form class="navbar-form animated fadeInDown" role="search">
+                        <input type="search" id="s" name="s" class="form-control" placeholder="Search in here...">
+                        <button type="submit" class="btn-circle" title="Search"><i class="fa fa-search"></i></button>
+                    </form>
+                </div><!-- End .container -->
+            </div><!-- End #header-search-form -->
+            <nav class="navbar navbar-white animated-dropdown ttb-dropdown" role="navigation">
+                
+                <div class="navbar-top clearfix">
+                    <div class="container">
+                        <div class="pull-left">
+                            <ul class="navbar-top-nav clearfix hidden-sm hidden-xs">
+                                {% if user.is_authenticated %}
+                                <li><a href="{% url 'logout' %}"><i class="fa fa-user"></i>Logout</a></li>
+                                {% else %}
+                                <li><a href="{% url 'login' %}"><i class="fa fa-external-link"></i>Login</a></li>
+                                <li><a href="{% url 'login' %}"><i class="fa fa-terminal"></i>Register</a></li>
+                                {% endif %}
+                            </ul>
+                            <div class="dropdown account-dropdown visible-sm visible-xs">
+                                <a class="dropdown-toggle" href="#" id="account-dropdown" data-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-user"></i>My Account
+                                <span class="angle"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="account-dropdown">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="login.html"><i class="fa fa-external-link"></i>Login</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="register.html"><i class="fa fa-terminal"></i>Register</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-gift"></i>My Wishlist</a></li>
+                                </ul>
+                            </div><!-- End .account-dropdown -->
+                        </div><!-- End .pull-left -->
+
+                        <div class="pull-right">
+                           
+                           {% if user.is_authenticated %}
+                            <div class="dropdowns-container pull-right clearfix">
+                                <div class="dropdown language-dropdown pull-right">
+                                    <a class="dropdown-toggle" href="#" id="language-dropdown" data-toggle="dropdown" aria-expanded="true">
+                                    {{ user.username }}
+                                    <span class="angle"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="language-dropdown">
+                                        
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'projects' %}">Projects</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'tasks' %}">Tasks</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'customers' %}">Customers</a></li>
+                                        </a>
+                                    </ul>
+                                </div><!-- End .curreny-dropdown -->
+                            </div><!-- End. dropdowns-container -->
+                            {% endif %}
+
+                        </div><!-- End .pull-right -->
+                    </div><!-- End .container -->
+                </div><!-- End .navbar-top -->
+                
+                <div class="sticky-wrapper"><div class="navbar-inner sticky-menu">
+                    <div class="container">
+                        <div class="navbar-header">
+
+                            <button type="button" class="navbar-toggle btn-circle pull-right collapsed" data-toggle="collapse" data-target="#main-navbar-container">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                            </button>
+
+                            <a class="navbar-brand text-uppercase" href="{% url 'home' %}" title="Boss - Multipurpose Premium Html5 Template">Time Tracker</a>
+
+                            
+                            
+                        </div><!-- End .navbar-header -->
+
+                        <div class="collapse navbar-collapse" id="main-navbar-container">
+                            <ul class="nav navbar-nav">
+                              
+                               <!--  <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Content<span class="angle"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">blog - Simple<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="blog.html">Blog Simple</a></li>
+                                                <li><a href="blog-left-sidebar.html">Blog -Left Sidebar</a></li>
+                                                <li><a href="blog-right-sidebar.html">Blog -Right Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">blog - Classic<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="blog-classic-fullwidth.html">Blog - Fullwidth</a></li>
+                                                <li><a href="blog-classic-left-sidebar.html">Blog - Left Sidebar</a></li>
+                                                <li><a href="blog-classic-right-sidebar.html">Blog - Right Sidebar</a></li>
+                                                <li><a href="blog-classic-both-sidebar.html">Blog - Both Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog List<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="blog-list-left-sidebar.html">List - Left Sidebar</a></li>
+                                                <li><a href="blog-list-right-sidebar.html">List - Right Sidebar</a></li>
+                                                <li><a href="blog-list-fullwidth.html">List - Fullwidth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Masonry - Boxed<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="blog-masonry-left-sidebar.html">Blog - Left Sidebar</a></li>
+                                                <li><a href="blog-masonry-right-sidebar.html">Blog - Right Sidebar</a></li>
+                                                <li><a href="blog-masonry-3col.html">Masonry - 3 Columns</a></li>
+                                                <li><a href="blog-masonry-4col.html">Masonry - 4 Columns</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Masonry - Fullwidth<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="blog-masonry-fullwidth-3col.html">Masonry - 3 Columns</a></li>
+                                                <li><a href="blog-masonry-fullwidth-4col.html">Masonry - 4 Columns</a></li>
+                                                <li><a href="blog-masonry-fullwidth-5col.html">Masonry - 5 Columns</a></li>
+                                                <li><a href="blog-masonry-fullwidth-6col.html">Masonry - 6 Columns</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog timeline<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="blog-timeline.html">Timeline - Version 1</a></li>
+                                                <li><a href="blog-timeline2.html">Timeline - Version 2</a></li>
+                                                <li><a href="blog-timeline3.html">Timeline - Version 3</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown sub-dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog Post<span class="angle"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="single.html">Blog Post</a></li>
+                                                <li><a href="single-left-sidebar.html">Post - Left Sidebar</a></li>
+                                                <li><a href="single-right-sidebar.html">Blog - Right Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li> -->
+                                
+                               <!--  <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Contact Us<span class="angle"></span></a>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="contact.html">Contact - Version 1</a></li>
+                                        <li><a href="contact2.html">Contact - Version 2</a></li>
+                                        <li><a href="contact3.html">Contact - Version 3</a></li>
+                                        <li><a href="contact4.html">Contact - Version 4</a></li>
+                                        <li><a href="contact5.html">Contact - Version 5</a></li>
+                                        <li><a href="contact6.html">Contact - Version 6</a></li>
+                                        <li><a href="contact7.html">Contact - Version 7</a></li>
+                                        <li><a href="contact8.html">Contact - Version 8</a></li>
+                                        <li><a href="contact9.html">Contact - Version 9</a></li>
+                                        <li><a href="contact10.html">Contact - Version 10</a></li>
+                                    </ul>
+                                </li> -->
+                                
+                            </ul>
+                            
+                           
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container -->
+                </div></div><!-- End .navbar-inner -->
+            </nav>
+        </header><!-- End #header -->
+    				
+    				{% block content %}{% endblock %}
+        
+            <div class="mb40"></div><!-- space -->
+
+        </div><!-- End #content -->
+   
+            <div id="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-push-6">
+                            <ul class="footer-menu">
+                               <!--  <li><a href="aboutus.html">About Us</a></li>
+                                <li><a href="#">Search</a></li>
+                                <li><a href="faqs.html">Faqs</a></li>
+                                <li><a href="knowledge.html">Knowledge</a></li>
+                                <li><a href="contact.html">Contact Us</a></li> -->
+                            </ul>
+                        </div><!-- End .col-md-6 -->
+                        <div class="col-md-6 col-md-pull-6">
+                            <p class="copyright">Developed by Michael Zakany.  All rights not really reserved. © <a href="http://michaelzakanyresume.me/" target='blank'>www.michaelzakanyresume.me</a></p>
+                        </div><!-- End .col-md-6 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End #footer-bottom -->
+        </footer><!-- End #footer -->
+
+    </div><!-- End #wrapper -->
+    <a href="#top" id="scroll-top" title="Back to Top"><i class="fa fa-angle-up"></i></a>
+	<!-- END -->
+
+
+<!-- Smoothscroll -->
+    <script src="{% static 'js/smoothscroll.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/waypoints-sticky.min.js' %}"></script>
+    <script src="{% static 'js/jquery.debouncedresize.js' %}"></script>
+    <script src="{% static 'js/retina.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    
+    <!-- custom -->
+    <script src="{% static 'custom-js/store.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/riot/2.3/riot+compiler.min.js"></script>
+
+    <!-- riot -->
+    <script type='riot/tag' src="{% static 'riot-tags/edit-project-modal.tag' %}"></script>
+    <script type='riot/tag' src="{% static 'riot-tags/project-list.tag' %}"></script>
+    <script type='riot/tag' src="{% static 'riot-tags/alert-box.tag' %}"></script>
+    <script type='riot/tag' src="{% static 'riot-tags/task-page.tag' %}"></script>
+    <script type='riot/tag' src="{% static 'riot-tags/customer-list.tag' %}"></script>
+
+    <script type="text/javascript">
+        riot.route.start(true);
+        token = Cookies.get('csrftoken')
+        store = new STORE('http://localhost:8000',token);
+        messages = riot.observable();
+        riot.mount('project-list',{messages:messages})
+        riot.mount('alert-box',{messages:messages})
+        riot.mount('task-page',{messages:messages,store:store})
+        riot.mount('customer-list',{messages:messages,store:store})
+    </script>
+</body>
+</html>
+

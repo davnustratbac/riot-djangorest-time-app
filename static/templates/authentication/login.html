@@ -1,0 +1,34 @@
+{% extends 'authentication/index.html' %}
+{% load staticfiles %}
+
+{% block login %}
+          <h2 class="title-border custom mb40">Login</h2>
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="username" class="input-desc">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="">
+                            </div><!-- End .from-group -->
+                            <div class="form-group mb10">
+                                <label for="password" class="input-desc">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="">
+                            </div><!-- End .from-group -->
+                            <div class="form-group text-right clear-margin helper-group">
+                                <a href="recover-password.html">Forget password?</a>
+                            </div><!-- End .form-group -->
+                            <div class="form-group mt15-r">
+                                <div class="checkbox">
+                                  <label class="custom-checkbox-wrapper">
+                                    <span class="custom-checkbox-container">
+                                        <input type="checkbox" name="remember" id="remember" value="true">
+                                        <span class="custom-checkbox-icon"></span>
+                                    </span>
+                                   <span>Remember Me!</span>
+                                  </label>
+                                </div><!-- End .checkbox -->
+                            </div><!-- End .form-group -->
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-custom" value="Login Now">
+                            </div><!-- End .from-group -->
+                        </form>
+
+{% endblock %}
