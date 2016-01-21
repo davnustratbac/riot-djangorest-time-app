@@ -9,7 +9,7 @@ class TaskAdmin(admin.ModelAdmin):
 admin.site.register(Task,TaskAdmin)
 
 class TaskEntryAdmin(admin.ModelAdmin):
-	list_display = ['note','date_field','time_record']
+	list_display = ['note','duration_in_seconds','clock_started','date_field','time_record']
 	class Meta:
 		model = TaskEntry
 

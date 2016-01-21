@@ -78,7 +78,18 @@ class APITaskEntries(ModelListMixin,APIView):
 		return Response('Failure, there were no tasks according to that id',status=status.HTTP_404_NOT_FOUND)
 
 
+class APITaskEntryHitTimer(ModelListMixin,APIView):
+	authentication_classes = (SessionAuthentication,)
+	permission_classes = (IsAuthenticated,)
 
+	def post(self,request,id):
+		task_entry = self.get_task_entry_by_id(id)
+		if task_entry:
+			task_entry.hit_timer()
+			serializer_class = TaskEntrySerializer
+			serialized_entry = TaskEntrySerializer(task_entry).data
+			return Response(serialized_entry,status=status.HTTP_200_OK)
+		return Response('Failure, couldnt find task')
 
 
 

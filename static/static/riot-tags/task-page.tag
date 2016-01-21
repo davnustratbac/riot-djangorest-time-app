@@ -42,7 +42,7 @@
 		<div class="row">
 			<div class="col-md-2">
 				
-				<!-- task form -->
+				<!-- task form modal/button-->
 				<button onclick={ getProjects } class="btn btn-warning modal-button" data-toggle="modal" data-target="#modal-text" style='margin-bottom: 5px;'>
             create task
         </button>
@@ -57,20 +57,15 @@
                 </div><!-- End .modal-header -->
                 <div class="modal-body">
 
-                <!-- task form -->
+                <!-- task form button/modal-->
                 <form>
 	                <select class="form-control" name='projectSelect'>
 	                		<option>None</option>
 	                    <option each={ project in projects }>{ project.name }</option>
 	                </select>
 	                	
-	                <labe
-	                lclass=
-	                "input-desc">Name</l
-
-	                abel>
+	                <label class="input-desc">Name</label>
 	         
-
 	                <input class="form-control" type="text" placeholder="Enter Name" name="taskName">
 
 	                </div><!-- End .modal-body -->
@@ -93,7 +88,7 @@
 
             	<span class="caret"></span></button>
 
-            	<!-- task list -->
+            	<!-- task list dropdown-->
 	            <ul class="dropdown-menu pull-left task-results" role="menu">
 	            	<li class="dropdown-header">
 	            		tasks: 
@@ -108,21 +103,21 @@
 	            	<li onclick={ addAnotherEntry } class='{active:task.has_entries}' each={ task in tasks }><a href="#">{ task.name }</a></li>
 	            </ul>
 
-	            <!-- add another entry modal -->
+	            <!-- add new entry or list modal -->
 	            <div class="modal fade" id="add-another-entry-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                        <h3 class="modal-title" id="myModalLabel3">Enter Task Entry</h3>
-                        </div><!-- End .modal-header -->
-                        <div class="modal-body">
-                        	<small>Task</small>
-                        	<h2>{ task.name }</h2>
-                        	<p>enter another entry for this task?</p>
-                        	<button onclick={ yesAnotherEntry } class="btn btn-custom" data-dismiss="modal">Yes</button>
-                        	<button onclick={ noAnotherEntry } class="btn btn-dark" data-dismiss='modal'>No</button>	
-                        </div><!-- End .modal-body -->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="myModalLabel3">Enter Task Entry</h3>
+                    </div><!-- End .modal-header -->
+                    <div class="modal-body">
+                    	<small>Task</small>
+                    	<h2>{ task.name }</h2>
+                    	<p>enter another entry for this task?</p>
+                    	<button onclick={ yesAnotherEntry } class="btn btn-custom" data-dismiss="modal">Yes</button>
+                    	<button onclick={ noAnotherEntry } class="btn btn-dark" data-dismiss='modal'>No</button>	
+                    </div><!-- End .modal-body -->
                        
                     </div><!-- End .modal-content -->
                 </div><!-- End .modal-dialog -->
@@ -162,7 +157,7 @@
 									<th>clock started</th>
 									<th>date</th>
 									<th>last save</th>
-									<th>duration</th>
+									<th>duration/sec</th>
 									<th>note</th>
 									<th>edit</th>
 									<th>delete</th>
@@ -176,11 +171,17 @@
 									<td>{ entry.clock_started }</td>
 									<td>{ entry.date_field }</td>
 									<td>{ entry.time_record }</td>
-									<td>{ entry.duration_in_seconds }</td>
+									<td>{ entry.duration_in_seconds } secs</td>
 									<td>{ entry.note }</td>
 									<td><button class='btn btn-default'>edit</button></td>
 									<td><button class="btn btn-danger">Delete</button></td>
-									<td><button class='btn btn-info'>Start Clock</button></td>
+									<td>
+										<button if={ !entry.clock_started } onclick={ hitTimer } class='btn btn-info'>Start Clock</button>
+										<button if={ entry.clock_started } onclick={ hitTimer } class='btn btn-dark'>
+											<i class="fa fa-refresh fa-spin"></i>
+											Stop Clock
+										</button>
+									</td>
 								</tr> 
 				
 								
@@ -190,6 +191,7 @@
 			</div>
 	</div>
 <script>
+
 	// init variables
 	this.activateTaskEntries = false
 	this.activateTaskEntryForm = false
@@ -209,15 +211,6 @@
 			this.update()
 		});
 	})
-
-
-	initView(task){
-		if (task.has_entries) {
-			this.showTaskEntries(task)
-		}else{
-			this.showTaskEntryForm(task)
-		}
-	}
 
 	// crud task entry
 	createTaskEntry(e){
@@ -248,6 +241,18 @@
 		})
 		.fail((e) => {console.log(e)})
 	}
+
+	// timer
+	hitTimer(e){
+		id = e.item.entry.id
+		this.opts.store.taskEntries.hitTimer(id).then((res) => {
+			taskEntry = e.item.entry
+			taskEntry.clock_started ? taskEntry.clock_started = false : taskEntry.clock_started = true
+			if (taskEntry.clock_started === false){taskEntry.duration_in_seconds = res.duration_in_seconds}
+			this.update()
+		}).fail((e) => {console.log(e)})
+	}
+
 
 	// autocomplete
 

@@ -1,3 +1,4 @@
+from datetime import datetime,date,time
 from django.db import models
 from project.models import Project 
 from django.contrib.auth.models import User 
@@ -23,3 +24,34 @@ class TaskEntry(models.Model):
 	
 	def __unicode__(self):
 		return str(self.task.name)
+
+	def start(self):
+		self.clock_started = True
+		self.date_field = datetime.now().date()
+		self.time_record = datetime.now().time()
+		self.save()
+
+	def stop(self):
+		self.clock_started = False
+		diff = self.difference_in_seconds(self.date_field,self.time_record)
+		self.duration_in_seconds += diff
+		self.save()
+
+	def difference_in_seconds(self,date,t):
+		hour,min,sec = t.hour,t.minute,t.second
+		formatted_time = time(hour,min,sec)
+		dn = datetime.now()
+		dt = datetime.combine(date,formatted_time)
+		return (dn-dt).seconds
+
+	def hit_timer(self):
+		self.stop() if self.clock_started else self.start()
+
+	def get_duration_in_seconds(self):
+		return self.duration_in_seconds
+
+
+
+
+
+

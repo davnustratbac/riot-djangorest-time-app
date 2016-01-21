@@ -68,6 +68,13 @@ class TaskEntryHelper():
                 return (task,True)
             return (None,False)
 
+    def get_task_entry_by_id(self,entry_id):
+        try:
+            task_entry = TaskEntry.objects.get(id=entry_id)
+        except:
+            task_entry = None
+        return task_entry
+
     def get_task_entries_by_user(self,request,task_id):
         helper = TaskHelper()
         task = helper.get_task(task_id)

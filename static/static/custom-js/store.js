@@ -23,6 +23,9 @@ var ROUTING = (function(){
 					show: `${self.server}/api/task/entries/`,
 					create(id){
 						return `${self.server}/api/task/${id}/entry/create/`
+					},
+					hitTimer(id){
+						return `${self.server}/api/task/entries/${id}/hit-timer/`
 					}
 				}
 			}
@@ -84,6 +87,12 @@ var TASKENTRY = (function(router,helper){
 		self.show = function(){
 			data = helper.packageData(data)
 			url = router.routes.taskEntry.show
+			return $.post(url,data)
+		}
+
+		self.hitTimer = function(id){
+			data = helper.packageData({})
+			url = router.routes.taskEntry.hitTimer(id)
 			return $.post(url,data)
 		}
 

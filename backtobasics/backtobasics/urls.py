@@ -3,7 +3,7 @@ from django.conf import settings
 
 # urls
 from api.project.views import APIProjectView,APIProjectListView,APIProjectCreateView,APIProjectDeleteView
-from api.task.views import APITaskListView,APITaskEntryCreate,APITaskEntries,APITaskCreate,APIFindTaskById
+from api.task.views import APITaskListView,APITaskEntryCreate,APITaskEntries,APITaskCreate,APIFindTaskById,APITaskEntryHitTimer
 from api.customer.views import APICustomerListView
 
 # django
@@ -40,6 +40,7 @@ urlpatterns += patterns('api.project',
 	# taskentries
 	url(r'^api/task/(?P<id>\d+)/entry/create/$',APITaskEntryCreate.as_view()),
 	url(r'^api/task/entries/$',APITaskEntries.as_view()),
+	url(r'^api/task/entries/(?P<id>\d+)/hit-timer/$',APITaskEntryHitTimer.as_view()),
 )
 # auth
 urlpatterns += patterns('authentication.views',
