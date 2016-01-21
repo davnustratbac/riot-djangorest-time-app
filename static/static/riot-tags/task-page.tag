@@ -9,6 +9,29 @@
 	.wide-button{
 		width: 150px;
 	}
+
+	#search-results{
+		border: 2px solid #B6C4C6; 
+		position:absolute;
+		width: 132px;
+		margin-left: 37px;
+		min-height: 20px;
+		max-height: 100px;
+		display: block;
+		z-index: 9999;
+		background-color: #E1E1E1;
+		overflow: auto;
+		cursor: default;
+	}
+
+	.hovered{
+		background-color: #50B2C4;
+	}
+
+	.task-results{
+		max-height: 300px;
+		overflow: auto;
+	}
 </style>
 	<div class="container" style='margin-top:25px;'>
 		<div class="row">
@@ -36,7 +59,13 @@
 	                    <option each={ project in projects }>{ project.name }</option>
 	                </select>
 	                	
-	                <labelclass="input-desc">Name</label>
+	                <labe
+	                lclass=
+	                "input-desc">Name</l
+
+	                abel>
+	         
+
 	                <input class="form-control" type="text" placeholder="Enter Name" name="taskName">
 
 	                </div><!-- End .modal-body -->
@@ -60,8 +89,17 @@
             	<span class="caret"></span></button>
 
             	<!-- task list -->
-	            <ul class="dropdown-menu pull-left" role="menu">
-	            	<li class="dropdown-header">tasks: <input type='text' placeholder='search'></li>            	
+	            <ul class="dropdown-menu pull-left task-results" role="menu">
+	            	<li class="dropdown-header">
+	            		tasks: 
+	            		<input onkeyup={ complete } style='margin-left: 5px;' type='text' placeholder=' search' name='autoComplete'>
+	            		<div id='search-results' if={ autoCompActivated }>
+	            			<ul>
+	            				<li each={ result in autoCompleteRes } onmouseleave={ autoCompResMouseLeave } onmouseenter={ autoCompResMouseEnter }><a onclick={ clickAutoCompResult } href="">{ result.name }</a></li>
+	            			</ul>
+	            		</div>
+
+	            	</li>            	
 	            	<li onclick={ addAnotherEntry } class='{active:task.has_entries}' each={ task in tasks }><a href="#">{ task.name }</a></li>
 	            </ul>
 
@@ -154,6 +192,9 @@
 	this.projects = null
 	this.tasks = null
 	this.customers = null 
+	this.isHovered = false
+	this.autoCompleteRes = []
+	this.autoCompActivated = false
 
 	// init
 	this.on('mount',function(){
@@ -164,11 +205,12 @@
 		});
 	})
 
-	initView(e){
-		if (e.item.task.has_entries) {
-			this.showTaskEntries(e.item.task)
+
+	initView(task){
+		if (task.has_entries) {
+			this.showTaskEntries(task)
 		}else{
-			this.showTaskEntryForm(e.item.task)
+			this.showTaskEntryForm(task)
 		}
 	}
 
@@ -202,7 +244,44 @@
 		.fail((e) => {console.log(e)})
 	}
 
+	// autocomplete
+
+	autoCompResMouseEnter(e){
+		$(e.target).addClass('hovered')
+	}
+
+	autoCompResMouseLeave(e){
+		$(e.target).removeClass('hovered')
+	}
+
+	clickAutoCompResult(e){
+		this.task = e.item.result
+		this.initView(e.item.result)
+		this.autoComplete.value = null
+		this.autoCompActivated = false
+	}
+
 	// actions
+	complete(e){
+		word = e.target.value
+		wordLen = word.length 
+
+		if (word.length >= 2){
+			foundResults = []
+			for (var i in this.tasks){
+				taskName = this.tasks[i].name 
+				if (word === taskName.slice(0,wordLen)){
+					this.autoCompActivated = true
+					foundResults.push(this.tasks[i])
+				}
+			}
+			this.autoCompleteRes = foundResults
+		}else if (word.length === 0){
+			this.autoCompActivated = false
+			this.autoCompleteRes = []
+		}
+	}
+
 	addAnotherEntry(e){
 		this.task = e.item.task
 		if (e.item.task.has_entries) {
@@ -237,10 +316,17 @@
 
 
 	showTaskEntries(task){
-		riot.route('/' + this.task.id.toString())
+		if (this.task === null){
+			resultTask = task
+		}else{
+			resultTask = this.task
+		}
+
+		self.opts.messages.trigger('fillAutoCompleteTag',{data:this.tasks})
+		riot.route('/' + resultTask.id.toString())
 		this._resetActivate()
 		this.activateTaskEntries = true
-		data = {taskID:this.task.id}
+		data = {taskID:resultTask.id}
 		this.opts.store.taskEntries.show().then((entries) => {
 			this.taskEntries = entries
 			this.update()

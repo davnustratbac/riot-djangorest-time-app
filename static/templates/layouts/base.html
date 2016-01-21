@@ -271,6 +271,7 @@
     <script type='riot/tag' src="{% static 'riot-tags/alert-box.tag' %}"></script>
     <script type='riot/tag' src="{% static 'riot-tags/task-page.tag' %}"></script>
     <script type='riot/tag' src="{% static 'riot-tags/customer-list.tag' %}"></script>
+    <script type='riot/tag' src="{% static 'riot-tags/autocomplete-input.tag' %}"></script>
 
     <script type="text/javascript">
         riot.route.start(true);
@@ -281,6 +282,7 @@
         riot.mount('alert-box',{messages:messages})
         riot.mount('task-page',{messages:messages,store:store})
         riot.mount('customer-list',{messages:messages,store:store})
+        riot.mount('autocomplete-input',{messages:messages,store:store})
     </script>
 </body>
 </html>
