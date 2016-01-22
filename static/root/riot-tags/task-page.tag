@@ -40,7 +40,7 @@
 </style>
 	<div class="container" style='margin-top:25px;'>
 		<div class="row">
-			<div class="col-md-2">
+			<div class="col-md-2 col-xs-2">
 				
 				<!-- task form modal/button-->
 				<button onclick={ getProjects } class="btn btn-warning modal-button" data-toggle="modal" data-target="#modal-text" style='margin-bottom: 5px;'>
@@ -128,7 +128,9 @@
 
 			</div>
 
-			<div class="col-md-10">
+
+			<div class="col-md-10 col-xs-12">
+				<div class='hidden-lg hidden-md' style='margin-bottom: 100px;'></div>
 			
 				<!-- task entry form -->
 				<div if={ activateTaskEntryForm } class="col-md-6 col-md-offset-2">
@@ -146,7 +148,7 @@
 
 					</div>
 				</div>
-
+				<div class='hidden-lg hidden-md' style='margin-bottom: 100px;'></div>
 				<!-- show task entries -->
 				<div if={ activateTaskEntries } class="bs-example" data-example-id="simple-table"> 
 
@@ -252,6 +254,8 @@
 	createTaskEntry(e){
 		task_id = this.task.id
 		data = {note:this.entryNote.value}
+		this.entryNote.value = null
+		this.update()
 		// create task entry
 		this.opts.store.taskEntries.create(task_id,data).then((res) => {
 			task = this.opts.store.findById(task_id,this.tasks)

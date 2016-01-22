@@ -39,6 +39,7 @@
   </div>
 	</div>
 
+	<div class='hidden-lg hidden-md' style='margin-bottom: 100px;'></div>
 
 	<div class="col-md-8">
 		
