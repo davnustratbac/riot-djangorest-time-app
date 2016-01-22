@@ -52,6 +52,7 @@ class TaskEntry(models.Model):
 		self.duration_in_seconds += diff
 		self.save()
 
+	
 	def difference_in_seconds(self,date,t):
 		hour,min,sec = t.hour,t.minute,t.second
 		formatted_time = time(hour,min,sec)

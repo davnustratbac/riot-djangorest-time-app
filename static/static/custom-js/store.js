@@ -10,36 +10,40 @@ var ROUTING = (function(){
 					show: `${self.server}/api/customers/`,
 				},
 				project: {
-					show: `${self.server}/api/projects/`,
 					create: `${self.server}/api/projects/create/`,
+					show: `${self.server}/api/projects/`,
+					update(id){
+						return `${self.server}/api/projects/update/${id}/`
+					},
 					delete(id){
 						return `${self.server}/api/projects/delete/${id}/`
 					},
 					getById(id){
 						return `${self.server}/api/project/${id}/`
 					},
-					update(id){
-						return `${self.server}/api/projects/update/${id}/`
-					}
+					
 				},
 				task: {
-					show: `${self.server}/api/tasks/`,
 					create: `${self.server}/api/tasks/create/`,
+					show: `${self.server}/api/tasks/`,
 					findById(id){
 						return `${self.server}/api/tasks/${id}/`
 					}
 				},
 				taskEntry: {
-					show: `${self.server}/api/task/entries/`,
 					create(id){
 						return `${self.server}/api/task/${id}/entry/create/`
+					},
+					show: `${self.server}/api/task/entries/`,
+					update(id){
+						return `${self.server}/api/task/entries/update/${id}/`
+					},
+					delete(id){
+						return `${self.server}/api/task/entries/delete/${id}/`
 					},
 					hitTimer(id){
 						return `${self.server}/api/task/entries/${id}/hit-timer/`
 					},
-					delete(id){
-						return `${self.server}/api/task/entries/delete/${id}/`
-					}
 				}
 			}
 
@@ -97,10 +101,16 @@ var TASKENTRY = (function(router,helper){
 			return $.post(url,contents)
 		}
 
-		self.show = function(){
-			data = helper.packageData(data)
+		self.show = function(data){
+			contents = helper.packageData(data)
 			url = router.routes.taskEntry.show
-			return $.post(url,data)
+			return $.post(url,contents)
+		}
+
+		self.update = function(id,data){
+			contents = helper.packageData(data)
+			url = router.routes.taskEntry.update(id)
+			return $.post(url,contents)
 		}
 
 		self.hitTimer = function(id){
@@ -109,7 +119,6 @@ var TASKENTRY = (function(router,helper){
 			return $.post(url,data)
 		}
 
-		self.update = function(taskEntryId){}
 
 		self.delete = function(taskEntryId){
 			data = helper.packageData({})

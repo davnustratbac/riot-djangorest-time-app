@@ -1,5 +1,6 @@
 from models import Task,TaskEntry
 import time as iwantto
+from django.utils import timezone
 from datetime import datetime,date,time
 
 from django.test import TestCase, Client
@@ -32,17 +33,20 @@ class TupleTest(TestCase):
 		diff = datetime.now() - datetime.combine(df,ft)
 		diff.seconds
 
-	def test_hit_timer(self):
-		self.te.hit_timer()
-		iwantto.sleep(4)
-		self.te.hit_timer()
-		assert self.te.get_duration_in_seconds() == 4
 
-	def test_last_save(self):
-		self.te.hit_timer()
-		iwantto.sleep(3)
-		self.te.hit_timer()
-		print self.te.last_date_time_save()
+	def test_edit_data(self):
+		dt = datetime.strptime('2016-01-21T22:50',"%Y-%m-%dT%H:%M")
+		time = dt.time()
+		date = dt.date()
+
+
+
+
+
+
+
+
+
 		
 
 

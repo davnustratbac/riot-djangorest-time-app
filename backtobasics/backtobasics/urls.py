@@ -10,7 +10,8 @@ from api.task.views import (
 		APITaskCreate,
 		APIFindTaskById,
 		APITaskEntryHitTimer,
-		APITaskEntryDelete
+		APITaskEntryDelete,
+		APITaskEntryUpdate
 	)
 
 from api.customer.views import APICustomerListView
@@ -52,6 +53,7 @@ urlpatterns += patterns('api.project',
 	url(r'^api/task/entries/$',APITaskEntries.as_view()),
 	url(r'^api/task/entries/(?P<id>\d+)/hit-timer/$',APITaskEntryHitTimer.as_view()),
 	url(r'^api/task/entries/delete/(?P<id>\d+)/$',APITaskEntryDelete.as_view()),
+	url(r'^api/task/entries/update/(?P<id>\d+)/$',APITaskEntryUpdate.as_view()),
 )
 # auth
 urlpatterns += patterns('authentication.views',

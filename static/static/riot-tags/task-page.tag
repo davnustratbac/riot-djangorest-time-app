@@ -200,7 +200,7 @@
                           </div><!-- End .modal-body -->
                           <div class="modal-footer">
                           <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
-                          <button onclick={ initiateDateTimePicker } class="btn btn-dark">Save</button>
+                          <button onclick={ editTaskEntry } class="btn btn-dark"data-dismiss="modal">Save</button>
                           </div><!-- End .modal-footer -->
                       </div><!-- End .modal-content -->
                   </div><!-- End .modal-dialog -->
@@ -238,6 +238,17 @@
 	})
 
 	// crud task entry
+	editTaskEntry(e){
+	 id = this.currentTaskEntry.id
+	 note = this.entryNoteEdit.value
+	 datetime = this.dateTimeField.value
+	 data = {note:note,datetime:datetime}
+
+	 this.opts.store.taskEntries.update(id,data).then((res) => {
+	 	console.log(res)
+	 }).fail((e) => {console.log(e)})
+	}
+
 	createTaskEntry(e){
 		task_id = this.task.id
 		data = {note:this.entryNote.value}
@@ -293,7 +304,8 @@
 			taskEntry.clock_started ? taskEntry.clock_started = false : taskEntry.clock_started = true
 			if (taskEntry.clock_started === false){
 				taskEntry.duration_in_seconds = res.duration_in_seconds
-				this.taskEntryDurationCount += res.duration_in_seconds
+				this.taskEntryDurationCount = 0
+				this.sumEntryDurations(this.taskEntries)
 			}
 			this.update()
 		}).fail((e) => {console.log(e)})
@@ -319,13 +331,7 @@
 	}
 
 	// actions
-	initiateDateTimePicker(){
-		 note = this.entryNoteEdit.value
-		 datetime = this.dateTimeField.value
-		 console.log(note)
-		 console.log(datetime)
-	}
-
+	
 	complete(e){
 		word = e.target.value
 		wordLen = word.length 
@@ -381,13 +387,13 @@
 		}else{
 			resultTask = this.task
 		}
-
+		this.taskEntryDurationCount = 0
 		self.opts.messages.trigger('fillAutoCompleteTag',{data:this.tasks})
 		riot.route('/' + resultTask.id.toString())
 		this._resetActivate()
 		this.activateTaskEntries = true
 		data = {taskID:resultTask.id}
-		this.opts.store.taskEntries.show().then((entries) => {
+		this.opts.store.taskEntries.show(data).then((entries) => {
 			this.taskEntries = entries
 			this.sumEntryDurations(entries)
 			this.update()

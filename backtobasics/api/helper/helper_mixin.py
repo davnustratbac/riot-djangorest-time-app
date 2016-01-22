@@ -1,3 +1,5 @@
+from datetime import datetime,date,time
+
 from customer.models import Customer 
 from project.models import Project 
 from task.models import Task,TaskEntry
@@ -88,6 +90,33 @@ class TaskEntryHelper():
         if task:
             return (task.taskentry_set.all(),True)
         return (None,False)
+
+    def update_task_entry(self,id,datetime,note):
+        entry = self.get_task_entry_by_id(id)
+        if entry:
+            if note is not None:
+                entry.note = note;
+
+            if datetime is not None: 
+                date,time,created = self.get_datetime(datetime);
+                entry.date_field = date
+                entry.time_record = time
+
+            entry.save()
+        
+            if note or datetime: 
+                return True
+        return False
+        
+
+
+    def get_datetime(self,datetime_str):
+        try:
+            dt = datetime.strptime(datetime_str,"%Y-%m-%dT%H:%M")
+            dt_formatted = (dt.date(),dt.time(),True)
+        except:
+            dt_formatted = (None,None,False)
+        return dt_formatted
 
 
 

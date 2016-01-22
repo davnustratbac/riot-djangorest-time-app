@@ -70,7 +70,7 @@ class APITaskEntries(ModelListMixin,APIView):
 	permission_classes = (IsAuthenticated,)
 
 	def post(self,request):
-		post = request.POST 
+		post = request.POST
 		task_entries,created = self.get_task_entries_by_user(request,post['taskID'])
 		if created:
 			serializer_class = TaskEntrySerializer
@@ -104,7 +104,20 @@ class APITaskEntryDelete(ModelListMixin,APIView):
 		return Response('Failure')
 
 
+class APITaskEntryUpdate(ModelListMixin,APIView):
+	authentication_classes = (SessionAuthentication,)
+	permission_classes = (IsAuthenticated,)
 
+	def post(self,request,id):
+		form = request.POST 
+		datetime = form['datetime'] or None
+		note = form['note'] or None
+
+		task_updated = self.update_task_entry(id,form['datetime'],note)
+		
+		if task_updated:
+			return Response('Successfully updated task')
+		return Response('Failure to update')
 
 
 
