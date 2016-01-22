@@ -252,6 +252,8 @@
 	createTaskEntry(e){
 		task_id = this.task.id
 		data = {note:this.entryNote.value}
+		this.entryNote.value = null
+		this.update()
 		// create task entry
 		this.opts.store.taskEntries.create(task_id,data).then((res) => {
 			task = this.opts.store.findById(task_id,this.tasks)

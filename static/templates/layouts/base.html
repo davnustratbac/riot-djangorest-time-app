@@ -191,6 +191,7 @@
     <script type="text/javascript">
         riot.route.start(true);
         token = Cookies.get('csrftoken')
+        // store = new STORE('http://www.mczdemoapp.us',token);
         store = new STORE('http://localhost:8000',token);
         messages = riot.observable();
         riot.mount('project-list',{messages:messages,store:store})
