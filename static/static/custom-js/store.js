@@ -3,7 +3,7 @@ var ROUTING = (function(){
 		
 		self.init = function(server,csrftoken){
 			self.server = server
-			self.csrftoken = csrftoken
+			self.csrftoken = csrftoken || {}
 		
 			self.routes = {
 				customer: {
@@ -18,6 +18,9 @@ var ROUTING = (function(){
 					getById(id){
 						return `${self.server}/api/project/${id}/`
 					},
+					update(id){
+						return `${self.server}/api/projects/update/${id}/`
+					}
 				},
 				task: {
 					show: `${self.server}/api/tasks/`,
@@ -151,8 +154,14 @@ var PROJECTS = (function(router,helper){
 		return $.post(url,data)
 	}
 
-	self.delete = function(task_id){
-		url = router.routes.project.delete(task_id)
+	self.update = function(project_id,data){
+		url = router.routes.project.update(project_id)
+		contents = helper.packageData(data)
+		return $.post(url,contents)
+	}
+
+	self.delete = function(project_id){
+		url = router.routes.project.delete(project_id)
 		data = helper.packageData({})
 		return $.post(url,data)
 	}
@@ -192,7 +201,7 @@ var STORE = (function(){
 		this.findById = function(id,objArray){
 			for (var i in objArray){
 				task = objArray[i]
-				if (task.id === task_id) {
+				if (task.id === id) {
 					return task
 				}
 			}

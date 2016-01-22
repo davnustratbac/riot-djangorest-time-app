@@ -9,6 +9,13 @@ class ProjectHelper():
         except:
             projects = None
         return projects
+    
+    def get_project_by_id(self,id):
+        try:
+            project = Project.objects.get(id=id)
+        except:
+            project = None
+        return project
 
 class CustomerHelper():
     def get_customer_list(self):

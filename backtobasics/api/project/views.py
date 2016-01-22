@@ -16,6 +16,20 @@ from api.project.serializers import ProjectSerializer
 
 from api.helper.helper_mixin import ModelListMixin
 
+class APIProjectUpdate(ModelListMixin,APIView):
+	authentication_classes = (SessionAuthentication,)
+	permission_classes = (IsAuthenticated,)
+
+	def post(self,request,id):
+		form = request.POST 
+		print form
+		project = self.get_project_by_id(id)
+		if project:
+			project.name = form['name']
+			project.save()
+			return Response('Successfully edited project')
+		return Response('Failure to update project')
+
 class APIProjectListView(ModelListMixin,APIView):
 	authentication_classes = (SessionAuthentication,)
 	permission_classes = (IsAuthenticated,)

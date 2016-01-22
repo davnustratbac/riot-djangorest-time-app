@@ -65,14 +65,19 @@
 							<td>
 								<button onclick={ getProject } class="btn btn-info" data-toggle="modal" data-target="#edit-modal" >Edit</button>
 
-							<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+							
+							</td>
+							<td><a onclick={ deleteProject } href="" class="btn btn-danger">Delete</a></td>
+						</tr> 
+						
+						<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
 
 					        <div class="modal-dialog modal-sm">
 
 					            <div class="modal-content">
 					                <div class="modal-header">
 					                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-					                <h3 class="modal-title">Edit Name<br></h3>
+					                <h3 class="modal-title">Edit Project<br></h3>
 					                </div><!-- End .modal-header -->
 
 					                <div class="modal-body">
@@ -83,22 +88,17 @@
 						              </select>
 					                
 					                <label>Project</label>
-					  						  <input value="" class="form-control" type="text" placeholder="{ modalProject.name }" name='project'>
+					  							<input class="form-control" type="text" placeholder="{ modalProject.name }" name='projectEdit'>
 					                
 					                </div><!-- End .modal-body -->
 					                <div class="modal-footer">
 					                <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
-					                <button class="btn btn-dark">Save</button>
+					                <button onclick={ editProject } class="btn btn-dark" data-dismiss="modal">Save</button>
 					                </form>
 					                </div><!-- End .modal-footer -->
 					            </div><!-- End .modal-content -->
 					        </div><!-- End .modal-dialog -->
 					    </div>
-							</td>
-							<td><a onclick={ deleteProject } href="" class="btn btn-danger">Delete</a></td>
-						</tr> 
-						
-		
 						
 					</tbody> 
 				</table> 
@@ -132,6 +132,17 @@
 
 	})
 
+	// crud projects
+
+	editProject(e){
+		id = this.modalProject.id
+		data = {name:this.projectEdit.value}
+		this.opts.store.projects.update(id,data).then((res) => {
+			proj = this.opts.store.findById(id,this.projects)
+			proj.name = this.projectEdit.value 
+			this.update()
+		}).fail((e) => {console.log(e)})
+	}
 
 	saveProject(){
 		$('#modal-text').modal('hide');
@@ -145,7 +156,7 @@
 			this.projects.push(project)
 			this._resetForm()
 			this.update()
-		});
+		})
 
 	}
 

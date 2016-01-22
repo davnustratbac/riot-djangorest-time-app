@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 
 # urls
-from api.project.views import APIProjectView,APIProjectListView,APIProjectCreateView,APIProjectDeleteView
+from api.project.views import APIProjectView,APIProjectListView,APIProjectCreateView,APIProjectDeleteView,APIProjectUpdate
 from api.task.views import (
 		APITaskListView,
 		APITaskEntryCreate,
@@ -39,6 +39,7 @@ urlpatterns += patterns('api.project',
 	url(r'^api/project/(?P<id>\d+)/$',APIProjectView.as_view()),
 	url(r'^api/projects/$',APIProjectListView.as_view()),
 	url(r'^api/projects/create/$',APIProjectCreateView.as_view()),
+	url(r'^api/projects/update/(?P<id>\d+)/$',APIProjectUpdate.as_view()),
 	url(r'^api/projects/delete/(?P<id>\d+)/$',APIProjectDeleteView.as_view()),
 	# customers
 	url(r'^api/customers/$',APICustomerListView.as_view()),
